@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miran Real Estate | Daşınmaz Əmlak</title>
+    <title><script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>Miran Real Estate | Daşınmaz Əmlak</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script><body>
     <header>
         <nav>
             <div class="logo">MIRAN <span>REAL ESTATE</span></div>
             <ul>
                 <li><a href="#">Ana Səhifə</a></li>
                 <li><a href="#">Evlər</a></li>
-                <li><a href="#">Haqqımızda</a></li>
+                <li><a href="#">Haqq&#305;m&#305;zda</a></li>
                 <li><a href="#">Əlaqə</a></li>
             </ul>
         </nav>
@@ -21,9 +31,9 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Xəyalınızdakı Evi Bizimlə Tapın</h1>
-            <p>Miran Real Estate - Güvənli və sürətli əmlak satışı.</p>
-            <a href="https://wa.me/994XXXXXXXXX" class="btn">Bizimlə Əlaqə (WhatsApp)</a>
+            <h1>Xəyal&#305;n&#305;zdak&#305; Evi Bizimlə Tap&#305;n</h1>
+            <p>Miran Real Estate - Güvənli və sürətli əmlak sat&#305;ş&#305;</p>
+            <a href="https://wa.me/994102321674" class="btn">Bizimlə Əlaqə (WhatsApp)</a>
         </div>
     </section>
 
