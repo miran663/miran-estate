@@ -30,7 +30,22 @@
         </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero"> <section id="elanlar-konteyneri" class="properties-grid">
+    </section>
+  
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/js-yaml/dist/js-yaml.min.js"></script>
+  
+  <script>
+    async function elanlariGetir() {
+      const konteyner = document.getElementById('elanlar-konteyneri');
+      
+      // Netlify CMS-in yaratdığı qovluqdan məlumatları oxumağa çalışırıq
+      // Qeyd: Bu hissə proqramlaşdırma tələb edir, sadə yol üçün aşağıdakı addımı izlə
+      konteyner.innerHTML = "<h2>Elanlar yüklənir...</h2>";
+    }
+    elanlariGetir();
+  </script>
         <div class="hero-content">
             <h1>Xəyal&#305;n&#305;zdak&#305; Evi Bizimlə Tap&#305;n</h1>
             <p>Miran Real Estate - Güvənli və sürətli əmlak sat&#305;ş&#305;</p>
