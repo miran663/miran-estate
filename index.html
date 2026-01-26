@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="az">
-<head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+    /* Elanların siyahısını ağıllı grid sisteminə keçiririk */
+    #elanlar-listesi {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 10px;
+    }
+
+    /* Telefon ekranları üçün xüsusi tənzimləmə */
+    @media (max-width: 600px) {
+        #elanlar-listesi {
+            grid-template-columns: 1fr; /* Elanlar tək-tək alt-alta düzülür */
+        }
+    }
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miran Real Estate | Daşm&#305;nmaz Əmlak</title>
