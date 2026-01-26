@@ -30,22 +30,39 @@
         </nav>
     </header>
 
-    <section class="hero"> <section id="elanlar-konteyneri" class="properties-grid">
-    </section>
-  
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/js-yaml/dist/js-yaml.min.js"></script>
-  
-  <script>
-    async function elanlariGetir() {
-      const konteyner = document.getElementById('elanlar-konteyneri');
-      
-      // Netlify CMS-in yaratdığı qovluqdan məlumatları oxumağa çalışırıq
-      // Qeyd: Bu hissə proqramlaşdırma tələb edir, sadə yol üçün aşağıdakı addımı izlə
-      konteyner.innerHTML = "<h2>Elanlar yüklənir...</h2>";
+    <section class="hero"> <div id="elanlar-listesi" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px;">
+    </div>
+
+<script src="https://unpkg.com/js-yaml/dist/js-yaml.min.js"></script>
+<script>
+    async function elanlariYukle() {
+        const response = await fetch('https://api.github.com/repos/miran663/miran-estate/contents/content/properties');
+        const files = await response.json();
+        const konteyner = document.getElementById('elanlar-listesi');
+
+        for (const file of files) {
+            if (file.name.endsWith('.md')) {
+                const contentRes = await fetch(file.download_url);
+                const text = await contentRes.text();
+                // Markdown-dan məlumatı ayırırıq
+                const title = text.split('title:')[1]?.split('\n')[0];
+                const price = text.split('price:')[1]?.split('\n')[0];
+                const image = text.split('image:')[1]?.split('\n')[0];
+
+                konteyner.innerHTML += `
+                    <div style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: white;">
+                        <img src="${image}" style="width: 100%; height: 200px; object-fit: cover;">
+                        <div style="padding: 15px;">
+                            <h3 style="color: #333;">${title}</h3>
+                            <p style="color: #e44d26; font-weight: bold;">${price}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
     }
-    elanlariGetir();
-  </script>
+    elanlariYukle();
+</script>
         <div class="hero-content">
             <h1>Xəyal&#305;n&#305;zdak&#305; Evi Bizimlə Tap&#305;n</h1>
             <p>Miran Real Estate - Güvənli və sürətli əmlak sat&#305;ş&#305;</p>
