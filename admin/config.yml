@@ -2,17 +2,17 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "assets/images"
+public_folder: "/assets/images"
 
 collections:
   - name: "properties"
     label: "Ev Elanları"
-    folder: "properties"
+    folder: "content/properties"
     create: true
     slug: "{{slug}}"
     fields:
       - { label: "Başlıq", name: "title", widget: "string" }
       - { label: "Qiymət", name: "price", widget: "string" }
       - { label: "Şəkil", name: "image", widget: "image" }
-      - { label: "Mətn", name: "body", widget: "markdown" }
+      - { label: "Məlumat", name: "body", widget: "markdown" }
