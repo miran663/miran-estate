@@ -10,12 +10,14 @@
     }
 
     /* Telefon ekranları üçün xüsusi tənzimləmə */
-    @media (max-width: 600px) {
-        #elanlar-listesi {
-            grid-template-columns: 1fr; /* Elanlar tək-tək alt-alta düzülür */
+            @media (max-width: 600px) {
+    #elanlar-listesi {
+        grid-template-columns: 1fr !important; /* !important əlavə etdik */
+    }
+}
         }
     }
-</style>
+    </style>
     <meta charset="UTF-8">
     <title>Miran Real Estate | Daşm&#305;nmaz Əmlak</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
