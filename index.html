@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html lang="az">
 <head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
-    /* Elanların siyahısı üçün əsas tənzimləmə */
-    #elanlar-listesi {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
+    /* Bütün saytı mobilə uyğunlaşdıran əsas tənzimləmə */
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Sağ tərəfə qaçmağı qadağan edir */
         width: 100%;
-        box-sizing: border-box; /* Kənar boşluqların hesablanması üçün */
     }
 
-    /* Mobil telefonlar üçün (Ekran 768px-dən kiçik olduqda) */
+    /* Elanlar bölməsinin enini məhdudlaşdırırıq */
+    #elanlar-listesi {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+        padding: 15px;
+        width: 100%;
+        max-width: 1200px; /* Noutbukda çox yayılmasın */
+        margin: 0 auto; /* Ortada qalsın */
+        box-sizing: border-box;
+    }
+
+    /* Mobil Telefonlar Üçün Məcburi Görünüş */
     @media (max-width: 768px) {
         #elanlar-listesi {
             grid-template-columns: 1fr !important; /* Məcburi tək sütun */
-            padding: 10px;
         }
         
-        /* Elan kartının içindəki şəklin tam enli olması üçün */
+        /* Elan kartlarının içindəki şəkillər tam otursun */
         .elan-kart img {
-            width: 100%;
-            height: auto;
-            display: block;
+            width: 100% !important;
+            height: auto !important;
+            border-radius: 8px;
+        }
+
+        /* Başlıq və yazılar kiçilsin ki, ekrana sığsın */
+        h1, h2 {
+            font-size: 20px !important;
+            text-align: center;
+        }
+        
+        .hero-section {
+            padding: 20px;
+            text-align: center;
         }
     }
 </style>
