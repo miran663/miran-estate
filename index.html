@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="az">
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>/* Bu hissə saytın sağa qaçmasını və zoom problemini həll edir */
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden; 
+        box-sizing: border-box;
+    }
+    
+    *, *:before, *:after {
+        box-sizing: inherit;
+    }
     /* Bütün saytı mobilə uyğunlaşdıran əsas tənzimləmə */
     body, html {
         margin: 0;
