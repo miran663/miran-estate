@@ -5,30 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miran Estate</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
-        header { background-color: #1a1a1a; color: #e6b31e; padding: 20px; text-align: center; }
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; text-align: center; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .info { padding: 15px; }
-        .price { color: #d32f2f; font-weight: bold; font-size: 1.2em; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f8f9fa; color: #333; }
+        header { background-color: #1a1a1a; color: #e6b31e; padding: 25px; text-align: center; border-bottom: 4px solid #e6b31e; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 30px; max-width: 1200px; margin: auto; }
+        .card { background: white; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); overflow: hidden; transition: 0.3s; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .card img { width: 100%; height: 230px; object-fit: cover; background-color: #eee; }
+        .info { padding: 20px; text-align: center; }
+        .price { color: #d32f2f; font-weight: bold; font-size: 1.4em; margin-top: 10px; display: block; }
+        h3 { margin: 0; font-size: 1.2em; color: #1a1a1a; }
+        .loading { text-align: center; padding: 50px; font-size: 1.2em; color: #666; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>MIRAN ESTATE</h1>
-    <p>Xəyalınızdakı evi bizimlə tapın</p>
+    <p>Real Əmlakın Doğru Ünvanı</p>
 </header>
 
 <div class="container" id="elanlar-box">
-    </div>
+    <div class="loading">Elanlar yüklənir...</div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Sənin Firebase məlumatların
     const firebaseConfig = {
         apiKey: "AIzaSyAjT3bzjea5MbSNB_3oEqdxobVbUNxektA",
         authDomain: "miranestate-1e373.firebaseapp.com",
@@ -42,25 +45,40 @@
     const db = getFirestore(app);
 
     async function loadData() {
-        const querySnapshot = await getDocs(collection(db, "elanlar"));
         const box = document.getElementById('elanlar-box');
-        box.innerHTML = ""; // Köhnə olan hər şeyi təmizləyir
+        try {
+            const q = query(collection(db, "elanlar"), orderBy("date", "desc"));
+            const querySnapshot = await getDocs(q);
+            box.innerHTML = ""; 
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            // Şəkil yolunu images qovluğuna uyğunlaşdırırıq
-            const imgPath = data.imgUrl.startsWith('images/') ? data.imgUrl : 'images/' + data.imgUrl;
-            
-            box.innerHTML += `
-                <div class="card">
-                    <img src="${imgPath}" onerror="this.src='https://via.placeholder.com/300x200?text=Sekil+Tapilmadi'">
-                    <div class="info">
-                        <h3>${data.title}</h3>
-                        <p class="price">${data.price} AZN</p>
+            if (querySnapshot.empty) {
+                box.innerHTML = "<div class='loading'>Hələlik heç bir elan yoxdur.</div>";
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                
+                // Şəkil yolunu avtomatik düzəldirik
+                let imgPath = data.imgUrl;
+                if (imgPath && !imgPath.startsWith('images/') && !imgPath.startsWith('http') && !imgPath.startsWith('assets/')) {
+                    imgPath = 'images/' + imgPath;
+                }
+                
+                box.innerHTML += `
+                    <div class="card">
+                        <img src="${imgPath}" onerror="this.src='https://via.placeholder.com/400x250?text=Sekil+Tapilmadi'">
+                        <div class="info">
+                            <h3>${data.title}</h3>
+                            <span class="price">${data.price} AZN</span>
+                        </div>
                     </div>
-                </div>
-            `;
-        });
+                `;
+            });
+        } catch (error) {
+            console.error("Xəta:", error);
+            box.innerHTML = "<div class='loading'>Məlumat yüklənərkən xəta baş verdi.</div>";
+        }
     }
 
     loadData();
