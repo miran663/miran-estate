@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miran Real Estate</title>
+    <style>
+        body { font-family: Arial; margin: 0; background: #f9f9f9; }
+        header { background: #1a1a1a; color: #e6b31e; padding: 20px; text-align: center; }
+        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .info { padding: 15px; }
+        .price { color: #d32f2f; font-weight: bold; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<header><h1>MIRAN ESTATE</h1></header>
+
+<div class="container" id="elanlar-box">
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAjT3bzjea5MbSNB_3oEqdxobVbUNxektA",
+        authDomain: "miranestate-1e373.firebaseapp.com",
+        projectId: "miranestate-1e373",
+        storageBucket: "miranestate-1e373.firebasestorage.app",
+        messagingSenderId: "748400359431",
+        appId: "1:748400359431:web:60335b64f3710a956ad2a2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const loadData = async () => {
+        const querySnapshot = await getDocs(collection(db, "elanlar"));
+        const box = document.getElementById('elanlar-box');
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            box.innerHTML += `
+                <div class="card">
+                    <img src="${data.imgUrl}" onerror="this.src='https://via.placeholder.com/300x200?text=Sekil+Tapilmadi'">
+                    <div class="info">
+                        <h3>${data.title}</h3>
+                        <p class="price">${data.price}</p>
+                    </div>
+                </div>
+            `;
+        });
+    };
+    loadData();
+</script>
+</body>
+</html>
