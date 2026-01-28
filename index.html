@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="az">
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>/* Bu hissə saytın sağa qaçmasını və zoom problemini həll edir */
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><style>/* Bütün elementləri ekrana sığmağa məcbur edirik */
+    * {
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+    }
+    
+    .hero-section, header, nav, .container {
+        width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin: 0 !important;
+    }/* Bu hissə saytın sağa qaçmasını və zoom problemini həll edir */
     body, html {
         margin: 0;
         padding: 0;
