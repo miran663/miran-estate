@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miran Real Estate</title>
+    <title>Miran Estate - Admin Panel</title>
     <style>
-        body { font-family: Arial; margin: 0; background: #f9f9f9; }
-        header { background: #1a1a1a; color: #e6b31e; padding: 20px; text-align: center; }
-        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .info { padding: 15px; }
-        .price { color: #d32f2f; font-weight: bold; font-size: 1.2em; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .admin-container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        h2 { color: #1a1a1a; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #e6b31e; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #c99d1a; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; }
     </style>
 </head>
 <body>
 
-<header><h1>MIRAN ESTATE</h1></header>
-
-<div class="container" id="elanlar-box">
-    </div>
+<div class="admin-container">
+    <h2>🏠 Yeni Elan Yerləşdir</h2>
+    <input type="text" id="title" placeholder="Mənzilin adı (məs: 2 otaqlı bina evi)">
+    <input type="text" id="price" placeholder="Qiymət (məs: 85,000 AZN)">
+    <input type="text" id="imgUrl" placeholder="Şəkil adı (məs: bina1.jpg)">
+    <button onclick="uploadToFirebase()">SAYTA ƏLAVƏ ET</button>
+    <a href="index.html" class="back-link">← Ana səhifəyə bax</a>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAjT3bzjea5MbSNB_3oEqdxobVbUNxektA",
@@ -37,23 +41,30 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const loadData = async () => {
-        const querySnapshot = await getDocs(collection(db, "elanlar"));
-        const box = document.getElementById('elanlar-box');
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            box.innerHTML += `
-                <div class="card">
-                    <img src="${data.imgUrl}" onerror="this.src='https://via.placeholder.com/300x200?text=Sekil+Tapilmadi'">
-                    <div class="info">
-                        <h3>${data.title}</h3>
-                        <p class="price">${data.price}</p>
-                    </div>
-                </div>
-            `;
-        });
+    window.uploadToFirebase = async () => {
+        const title = document.getElementById('title').value;
+        const price = document.getElementById('price').value;
+        const imgUrl = document.getElementById('imgUrl').value;
+
+        if(title && price) {
+            try {
+                await addDoc(collection(db, "elanlar"), {
+                    title: title,
+                    price: price,
+                    imgUrl: imgUrl,
+                    date: new Date()
+                });
+                alert("Uğurla əlavə edildi!");
+                document.getElementById('title').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('imgUrl').value = '';
+            } catch (e) {
+                alert("Xəta baş verdi: " + e);
+            }
+        } else {
+            alert("Zəhmət olmasa xanaları doldurun!");
+        }
     };
-    loadData();
 </script>
 </body>
 </html>
